@@ -24,14 +24,18 @@ import javax.swing.SpinnerNumberModel;
  */
 public class Information extends javax.swing.JDialog{
     
+    private String lastName="", name="", sex, age, civilStatus, educationYears,
+            occupation, occupationYears, caseNumber="", code="", medicalHistory,
+            PsychologicalHistory, PharmacologicalTreatment, Observations;
+    
     JLabel lblLastName = new JLabel("Apellido:");
     JLabel lblName = new JLabel("Nombre:");
     JLabel lblSex = new JLabel("Sexo:");
     JLabel lblAge = new JLabel("Edad:");
     JLabel lblCivilStatus = new JLabel("Estado civil:");
+    JLabel lblEducationYears = new JLabel("Años de escolaridad:");
     JLabel lblOccupation = new JLabel("Ocupación:");
     JLabel lblOccupationYears = new JLabel("Años en la ocupación:");
-    JLabel lblEducationYears = new JLabel("Años de escolaridad:");
     JLabel lblCaseNumber = new JLabel("Número de caso:");
     JLabel lblCode = new JLabel("Código:");
     JLabel lblMedicalHistory = new JLabel("Antecedentes médicos:");
@@ -152,22 +156,250 @@ public class Information extends javax.swing.JDialog{
 
 	this.setLocation(((screen.width - box.width)/2), (screen.height - box.height)/2);
         
-        
         //Agregamos evento a los botones
         btnExit.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e){
-                dispose();    //oculta la ventana pero no finaliza la aplicacion
+               btnExitActionPerformed(e);
+                //dispose();    //oculta la ventana pero no finaliza la aplicacion
             }
         });
         
         btnSave.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e){
-                System.out.println("Presiono gusradas");
+                System.out.println("Presiono gusradar");
+                setLastName(txtFileLastName.getText());
                 
+                setName(txtFileName.getText());
+             
+                setSex(boxSex.getSelectedItem().toString());
+             
+                setAge(spiAge.getValue().toString());
+                
+                setCivilStatus(boxCivilStatus.getSelectedItem().toString());
+                
+                setEducationYears(spiEducationYears.getValue().toString());
+                
+                setOccupation(boxOccupation.getSelectedItem().toString());
+                
+                setOccupationYears(spiOccupationYears.getValue().toString());
+                
+                System.out.println("Años de coaupacion "+getOccupationYears());
+                
+                setCaseNumber(txtFileCaseNumber.getText());
+                
+                setCode(txtFileCode.getText());
+                
+                setMedicalHistory(txtAreaMedicalHistory.getText());
+                
+                setPsychologicalHistory(txtAreaPsychologicalHistory.getText());
+                
+                setPharmacologicalTreatment(txtAreaPharmacologicalTreatment.getText());
+                
+                setObservations(txtAreaObservations.getText());
             }
         });
     
+    }
+
+     private void btnExitActionPerformed(ActionEvent e) {
+        dispose();
+    }
+    
+    /**
+     * @return the lastName
+     */
+    public String getLastName() {
+        return lastName;
+    }
+
+    /**
+     * @param lastName the lastName to set
+     */
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * @return the sex
+     */
+    public String getSex() {
+        return sex;
+    }
+
+    /**
+     * @param sex the sex to set
+     */
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    /**
+     * @return the age
+     */
+    public String getAge() {
+        return age;
+    }
+
+    /**
+     * @param age the age to set
+     */
+    public void setAge(String age) {
+        this.age = age;
+    }
+
+    /**
+     * @return the civilStatus
+     */
+    public String getCivilStatus() {
+        return civilStatus;
+    }
+
+    /**
+     * @param civilStatus the civilStatus to set
+     */
+    public void setCivilStatus(String civilStatus) {
+        this.civilStatus = civilStatus;
+    }
+
+    /**
+     * @return the occupation
+     */
+    public String getOccupation() {
+        return occupation;
+    }
+
+    /**
+     * @param occupation the occupation to set
+     */
+    public void setOccupation(String occupation) {
+        this.occupation = occupation;
+    }
+
+    /**
+     * @return the occupationYears
+     */
+    public String getOccupationYears() {
+        return occupationYears;
+    }
+
+    /**
+     * @param occupationYears the occupationYears to set
+     */
+    public void setOccupationYears(String occupationYears) {
+        this.occupationYears = occupationYears;
+    }
+
+    /**
+     * @return the educationYears
+     */
+    public String getEducationYears() {
+        return educationYears;
+    }
+
+    /**
+     * @param educationYears the educationYears to set
+     */
+    public void setEducationYears(String educationYears) {
+        this.educationYears = educationYears;
+    }
+
+    /**
+     * @return the caseNumber
+     */
+    public String getCaseNumber() {
+        return caseNumber;
+    }
+
+    /**
+     * @param caseNumber the caseNumber to set
+     */
+    public void setCaseNumber(String caseNumber) {
+        this.caseNumber = caseNumber;
+    }
+
+    /**
+     * @return the code
+     */
+    public String getCode() {
+        return code;
+    }
+
+    /**
+     * @param code the code to set
+     */
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    /**
+     * @return the medicalHistory
+     */
+    public String getMedicalHistory() {
+        return medicalHistory;
+    }
+
+    /**
+     * @param medicalHistory the medicalHistory to set
+     */
+    public void setMedicalHistory(String medicalHistory) {
+        this.medicalHistory = medicalHistory;
+    }
+
+    /**
+     * @return the PsychologicalHistory
+     */
+    public String getPsychologicalHistory() {
+        return PsychologicalHistory;
+    }
+
+    /**
+     * @param PsychologicalHistory the PsychologicalHistory to set
+     */
+    public void setPsychologicalHistory(String PsychologicalHistory) {
+        this.PsychologicalHistory = PsychologicalHistory;
+    }
+
+    /**
+     * @return the PharmacologicalTreatment
+     */
+    public String getPharmacologicalTreatment() {
+        return PharmacologicalTreatment;
+    }
+
+    /**
+     * @param PharmacologicalTreatment the PharmacologicalTreatment to set
+     */
+    public void setPharmacologicalTreatment(String PharmacologicalTreatment) {
+        this.PharmacologicalTreatment = PharmacologicalTreatment;
+    }
+
+    /**
+     * @return the Observations
+     */
+    public String getObservations() {
+        return Observations;
+    }
+
+    /**
+     * @param Observations the Observations to set
+     */
+    public void setObservations(String Observations) {
+        this.Observations = Observations;
     }
 }
