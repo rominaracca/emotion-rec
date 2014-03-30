@@ -70,7 +70,7 @@ public class About extends javax.swing.JDialog{
 		//Agregamos el evento al boton close
 		btnClose.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent evt){
-				dispose();
+				dispose();  //oculta la ventana pero no finaliza la aplicacion
 			}
 		});
 	}

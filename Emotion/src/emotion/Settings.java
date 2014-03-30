@@ -33,7 +33,7 @@ public class Settings extends javax.swing.JDialog{
         
     Button btnDirectory = new Button("...");
     
-    //Panel para acomodar los componentes
+    //Paneles para acomodar los componentes
     JPanel panelMain = new JPanel(new BorderLayout());
     JPanel panelTimer = new JPanel(new FlowLayout());
     JPanel panelDirectory = new JPanel(new GridLayout(3, 1));

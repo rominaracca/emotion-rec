@@ -15,6 +15,51 @@ public class MainFrame extends javax.swing.JFrame {
     //public static File[] photos;
     private File[] photos;
     private int counting;
+    private int hour, min, seg, ds, conditionHour, conditionMin, conditionSeg;
+    Settings settings;
+    public boolean issuspended = false;//para saber si el hilo esta suspendido o pausado
+    
+    Thread thread = new Thread(){     //declaramos el hilo para manejar el cronometro
+        @Override
+        public void run(){
+            try{            
+                while(counting != photos.length-1){
+                    if(ds == 99){   
+                        ds = 0;     //decisegundo vuelve a empezar en cero
+                        setSeg(getSeg() + 1);      //y aumenta un segundo   
+                    }
+                    if(getSeg() == 59){
+                        setSeg(0);    //segundo vuelve a empezar en cero
+                        setMin(getMin() + 1);      //y aumenta un minuto
+                    }
+                    if(getMin() == 59){
+                        setMin(0);    //minuto vuelve a empezar en cero
+                        setHour(getHour() + 1);     //y aumenta una hora
+                    }
+                    ds++;           //aumentan las decimas de segundo
+            
+                    thread.sleep(10);//que duerma una decima de segundo
+                    if(getSeg() == getConditionSeg() && getMin() == getConditionMin() && getHour() == getConditionHour()){
+                       
+                        System.out.println("Nobre del boton - Text: Tiempo agotado");
+                        System.out.println("Tiempo: "+getHour()+" "+getMin()+" "+getSeg()+" "+getDs());
+                        setDs(0);
+                        setSeg(0);
+                        setMin(0);
+                        setHour(0);
+                       
+                        nextPicture();
+                    }
+                    
+                }
+                
+                System.out.println("Fin del cronometro");
+                
+            } catch (java.lang.InterruptedException ie) {
+                System.out.println(ie.getMessage());
+            }
+        }
+    };
     
     
     public MainFrame() {
@@ -275,9 +320,8 @@ public class MainFrame extends javax.swing.JFrame {
             //System.out.println("Tiempo: "+getHour()+" "+getMin()+" "+getSeg()+" "+getDs());
 
             nextPicture();
-
-            //ReiniciarCronometro();
-            //IniciarCronometro();
+            restartTimer();
+            startTimer();
         }
         
     }//GEN-LAST:event_btnAlegriaActionPerformed
@@ -297,8 +341,7 @@ public class MainFrame extends javax.swing.JFrame {
             Picture picture = new Picture(pictureFile.getPath());
             panelPicture.add(picture);
             loadDirectory(pictureFile.getParent());     
-        }
-        
+        }   
     }//GEN-LAST:event_btnMenuOpenActionPerformed
     
     private void btnAscoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAscoActionPerformed
@@ -340,7 +383,8 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_menuItemSettingsActionPerformed
 
     private void menuItemLoadInformationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemLoadInformationActionPerformed
-
+        Information info = new Information();
+        info.setVisible(rootPaneCheckingEnabled);
     }//GEN-LAST:event_menuItemLoadInformationActionPerformed
 
     
@@ -386,6 +430,136 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }
     
+    /**
+     * Inicia el cronometro.
+     * Se configura el valor de corte del cronometro en base a la configuracion asignada en Settings
+     */
+    public void startTimer(){
+        setConditionHour((int) settings.spiHour.getValue());
+        setConditionMin((int) settings.spiMin.getValue());
+        setConditionSeg((int) settings.spiSeg.getValue());
+        
+        if(!issuspended){
+            thread.start();
+        }else{
+            thread.resume();
+            issuspended = false;
+        }
+    }
+
+    /**
+     * Se reinician los valores del cronometro
+     * El hilo del cronometro se suspende
+     * Hora, minutos, segundos y decimas de segundos se le asigna valor cero
+     */
+    public void restartTimer(){
+        thread.suspend();
+        setHour(0);
+        setMin(0);
+        setSeg(0);
+        setDs(0);
+        issuspended = true;
+    }
+    
+    
+      /**
+     * @return the hour
+     */
+    public int getHour() {
+        return hour;
+    }
+
+    /**
+     * @param hour the hour to set
+     */
+    public void setHour(int hour) {
+        this.hour = hour;
+    }
+
+    /**
+     * @return the min
+     */
+    public int getMin() {
+        return min;
+    }
+
+    /**
+     * @param min the min to set
+     */
+    public void setMin(int min) {
+        this.min = min;
+    }
+
+    /**
+     * @return the seg
+     */
+    public int getSeg() {
+        return seg;
+    }
+
+    /**
+     * @param seg the seg to set
+     */
+    public void setSeg(int seg) {
+        this.seg = seg;
+    }
+    
+     /**
+     * @return the ds
+     */
+    public int getDs() {
+        return ds;
+    }
+
+    /**
+     * @param ds the seg to set
+     */
+    public void setDs(int ds) {
+        this.ds = ds;
+    }
+
+    /**
+     * @return the conditionHour
+     */
+    public int getConditionHour() {
+        return conditionHour;
+    }
+
+    /**
+     * @param conditionHour the conditionHour to set
+     */
+    public void setConditionHour(int conditionHour) {
+        this.conditionHour = conditionHour;
+    }
+
+    /**
+     * @return the conditionMin
+     */
+    public int getConditionMin() {
+        return conditionMin;
+    }
+
+    /**
+     * @param conditionMin the conditionMin to set
+     */
+    public void setConditionMin(int conditionMin) {
+        this.conditionMin = conditionMin;
+    }
+
+    /**
+     * @return the conditionSeg
+     */
+    public int getConditionSeg() {
+        return conditionSeg;
+    }
+
+    /**
+     * @param conditionSeg the conditionSeg to set
+     */
+    public void setConditionSeg(int conditionSeg) {
+        this.conditionSeg = conditionSeg;
+    }
+       
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAlegria;
