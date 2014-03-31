@@ -115,13 +115,13 @@ public class Picture extends JPanel{
     
     @Override
     public void paintComponent(Graphics g){
-      Graphics2D g2 = (Graphics2D) g;
-        
-      int newW = (int) (originalPicture.getWidth() * xScaleFactor);
-      int newH = (int) (originalPicture.getHeight() * yScaleFactor);
-      g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-      g2.clearRect(0, 0, getWidth(), getHeight());
-      g2.drawImage(originalPicture, 0, 0, newW, newH, null);
+        Graphics2D g2 = (Graphics2D) g;
+       
+        int newW = (int) (originalPicture.getWidth() * xScaleFactor);
+        int newH = (int) (originalPicture.getHeight() * yScaleFactor);
+        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2.clearRect(0, 0, getWidth(), getHeight());
+        g2.drawImage(originalPicture, 0, 0, newW, newH, null);
 
         if(newW>650 || newH>615){
             decreasePicture(); 

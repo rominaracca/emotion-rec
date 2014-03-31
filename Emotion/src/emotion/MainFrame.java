@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -26,7 +27,12 @@ public class MainFrame extends javax.swing.JFrame {
     public boolean issuspended = false; //para saber si el hilo esta suspendido o pausado
     Settings settings;// = new Settings();
     Information info; // = new Information();
-    private boolean start = false;
+    //private boolean start = false;
+    
+    //FileWriter outFile;
+   // BufferedWriter outBuffWriter;
+    FileWriter outFile = null;
+    PrintWriter outPw;
     
     Thread thread = new Thread(){     //declaramos el hilo para manejar el cronometro
         @Override
@@ -59,20 +65,30 @@ public class MainFrame extends javax.swing.JFrame {
                     
                     ds++;           //aumentan las decimas de segundo
                     thread.sleep(10);//que duerma una decima de segundo
-                }    
+                }
+                
+                System.out.println("Fin del while");
+                //btnMenuStart.setEnabled(false);
+               // new MainFrame();
+             try{
+                 if(outFile != null)
+                     outFile.close();
+             }catch(IOException ex){
+                 System.err.println("Error:"+ex.toString());
+             }
+                
             } catch (java.lang.InterruptedException ie) {
                 System.out.println(ie.getMessage());
             }
         }
     };
     
-    
     public MainFrame() {
         initComponents();
         setLocationRelativeTo(null);
         setIconImage(new ImageIcon(getClass().getResource("/icon/flag.png")).getImage());
         settings = new Settings();
-        info = new Information();
+        info = new Information(); 
     }
  
   
@@ -327,10 +343,8 @@ public class MainFrame extends javax.swing.JFrame {
     
     private void btnAlegriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlegriaActionPerformed
         if(counting < photos.length-1){
-            System.out.println("Nombre Imagen: "+this.photos[this.counting].getName());
-            System.out.println("Nobre del boton - Text: "+btnAlegria.getText());
-            System.out.println("Tiempo: "+getHour()+" "+getMin()+" "+getSeg()+" "+getDs());
-
+            System.out.println(this.photos[this.counting].getName()+" : "+ btnAlegria.getText()+" : "+
+                    getHour()+"."+getMin()+"."+getSeg()+"."+getDs());
             nextPicture();
             restartTimer();
             startTimer();
@@ -346,13 +360,16 @@ public class MainFrame extends javax.swing.JFrame {
         JFileChooser fcPicture = new JFileChooser();
         fcPicture.setFileFilter(new FileNameExtensionFilter("Archivo de imagen", "jpg", "JPG", "jpeg", "JPEG", "png", "PNG", "gif", "GIF"));
         int option = fcPicture.showDialog(this, "Abrir"); 
-
+        panelPicture.removeAll();   //limpio el panel por si se carga otro directorio
+        System.out.println("Limio panel");
         if(option == JFileChooser.APPROVE_OPTION){    
             File pictureFile = fcPicture.getSelectedFile(); 
-            Picture picture = new Picture(pictureFile.getPath());
-            panelPicture.add(picture);
-            loadDirectory(pictureFile.getParent());     
+            Picture picture = new Picture(pictureFile.getPath());  
+            loadDirectory(pictureFile.getParent());
+            panelPicture.add(picture);        
         }   
+        
+       // restartTimer();
     }//GEN-LAST:event_btnMenuOpenActionPerformed
     
     private void btnAscoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAscoActionPerformed
@@ -384,27 +401,69 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnNingunaActionPerformed
 
     private void btnMenuTimerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuTimerActionPerformed
-        //Settings setting = new Settings();
         settings.setVisible(rootPaneCheckingEnabled);
     }//GEN-LAST:event_btnMenuTimerActionPerformed
 
     private void menuItemSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemSettingsActionPerformed
-       // settings = new Settings();
-        settings.setVisible(rootPaneCheckingEnabled);
+          settings.setVisible(rootPaneCheckingEnabled);
     }//GEN-LAST:event_menuItemSettingsActionPerformed
 
     private void menuItemLoadInformationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemLoadInformationActionPerformed
-        //Information info = new Information();
         info.setVisible(rootPaneCheckingEnabled);
     }//GEN-LAST:event_menuItemLoadInformationActionPerformed
 
     private void btnMenuStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuStartActionPerformed
-       
+   /*    
+        if(thread.isAlive()){
+            System.out.println("Hilo vivo");
+        }else{
+            System.out.println("Hilo muerto");
+             startTimer();
+        }
+        */
+      
+         
+         try{
+             // Obtengo el camino absoluto de mi directorio actual
+             //String directory = System.getProperty("user.dir");
+             //file = new FileWriter(System.getProperty("user.dir")+"resultados.txt", true);
+             outFile = new FileWriter("C:\\Users\\Romi\\Desktop\\resultados.txt", true);
+             outPw = new PrintWriter(outFile);
+             
+             outPw.print("************** INFORMACIÓN PERSONAL **************\r\n");
+             outPw.println("Apellido: "+info.getLastName()+"\r\n");
+             outPw.println("Antecedentes médicos: "+info.getMedicalHistory()+"\r\n");
+             outPw.println("Nombre: "+info.getName()+"\r\n");
+            outPw.println("Sexo: "+info.getSex()+"\r\n");
+            outPw.println("Edad: "+info.getAge()+"\r\n");
+            outPw.println("Estado civil: "+info.getCivilStatus()+"\r\n");
+            outPw.println("Años de escolaridad: "+info.getEducationYears()+"\r\n");
+            outPw.println("Ocupación: "+info.getOccupation()+"\r\n");
+            outPw.println("Años de ocupación: "+info.getOccupationYears()+"\r\n");
+            outPw.println("Número de caso: "+info.getCaseNumber()+"\r\n");
+            outPw.println("Código: "+info.getCode()+"\r\n");
+
+            outPw.println("************** ******************* **************\r\n");
+            outPw.println("Antecedentes médicos: "+info.getMedicalHistory()+"\r\n");
+            outPw.println("Antecedentes psicológicos: "+info.getPsychologicalHistory()+"\r\n");
+            outPw.println("Tratamiento farmacológico: "+info.getPharmacologicalTreatment()+"\r\n");
+            outPw.println("Observaciones: "+info.getObservations()+"\r\n");
+
+            outPw.println("*************** DATOS DE LA PRUEBA ***************\r\n");
+            outPw.println("Imagen : Emocion : Tiempo(hs.min.seg.ds)\r\n");
         
-        /* try { 
-            FileWriter outFile = new FileWriter("C:\\Users\\Romi\\Desktop\\resultados.txt");
-            try (BufferedWriter outBuffWriter = new BufferedWriter(outFile)) {
-               
+         }catch(IOException e){
+             System.err.println("Error:"+e.toString());
+         }
+        
+        
+        /*
+       FileWriter outFile = null;
+         try { 
+             System.out.println("CREACION ARCHIVO");
+            outFile = new FileWriter("C:\\Users\\Romi\\Desktop\\resultados.txt");
+            BufferedWriter outBuffWriter = new BufferedWriter(outFile);
+             System.out.println("FIN DE CREACION DE ARCHIVO");
                 outBuffWriter.write("************** INFORMACIÓN PERSONAL **************\r\n");
                 outBuffWriter.write("Apellido: "+info.getLastName()+"\r\n");
                 outBuffWriter.write("Nombre: "+info.getName()+"\r\n");
@@ -418,7 +477,8 @@ public class MainFrame extends javax.swing.JFrame {
                 outBuffWriter.write("Código: "+info.getCode()+"\r\n");
                 
                 outBuffWriter.write("************** ******************* **************\r\n");
-                outBuffWriter.write("Antecedentes médicos: "+info.getMedicalHistory()+"\r\n");
+                //outBuffWriter.write("Antecedentes médicos: "+info.getMedicalHistory()+"\r\n");
+                outBuffWriter.write("Antecedentes médicos: "+info.txtAreaMedicalHistory.getText()+"\r\n");
                 outBuffWriter.write("Antecedentes psicológicos: "+info.getPsychologicalHistory()+"\r\n");
                 outBuffWriter.write("Tratamiento farmacológico: "+info.getPharmacologicalTreatment()+"\r\n");
                 outBuffWriter.write("Observaciones: "+info.getObservations()+"\r\n");
@@ -426,11 +486,21 @@ public class MainFrame extends javax.swing.JFrame {
                 outBuffWriter.write("*************** DATOS DE LA PRUEBA ***************\r\n");
                 outBuffWriter.write("Imagen : Emocion : Tiempo(hs.min.seg.ds)\r\n");
         
-                cerrar archivo
-            }
+              //  cerrar archivo
+            
+               // outFile.close();
+               // outBuffWriter.close();
         } catch (IOException ex) {
+             System.err.println("Error: "+ex.toString());
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }finally{
+             try{
+                if(outFile != null)
+                    outFile.close();
+             }catch(IOException ex){
+                 System.err.println("Error: "+ex.toString());
+             }
+         }
         */
         startTimer();
     }//GEN-LAST:event_btnMenuStartActionPerformed
@@ -472,7 +542,10 @@ public class MainFrame extends javax.swing.JFrame {
                        counting++;
                        tmp.setImagenFromFile(photos[counting]);      //Cambia la imagen a panelPicture por medio del método setImagenFromFile()
                    }
-           }
+           }else{
+//                stopTimer();
+ //               System.out.println("PARO EL CRONOMETRO");
+            }
         }catch(Exception e){
             System.err.println("Error en proxima imagen "+e.toString());
         }
@@ -517,14 +590,18 @@ public class MainFrame extends javax.swing.JFrame {
         setConditionHour((int) settings.spiHour.getValue());
         setConditionMin((int) settings.spiMin.getValue());
        setConditionSeg((int) settings.spiSeg.getValue());
-        
-        if(!issuspended){
-            System.out.println("START");
-            thread.start();
-        }else{
-            System.out.println("RESUME");
-            thread.resume();
-            issuspended = false;
+       
+       try{
+            if(!issuspended){
+                System.out.println("START");
+                thread.start();
+            }else{
+                System.out.println("RESUME");
+                thread.resume();
+                issuspended = false;
+            }
+        }catch(Exception e){
+                System.err.println("Error: "+e.toString());
         }
     }
 
@@ -542,7 +619,12 @@ public class MainFrame extends javax.swing.JFrame {
         issuspended = true;
     }
     
-    
+  
+    /*
+    public void stopTimer(){
+        thread.stop();
+    }
+    */
       /**
      * @return the hour
      */

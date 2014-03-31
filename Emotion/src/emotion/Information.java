@@ -22,7 +22,7 @@ import javax.swing.SpinnerNumberModel;
  *
  * @author Romina Racca
  */
-public class Information extends javax.swing.JDialog{
+public final class Information extends javax.swing.JDialog{
     
     private String lastName="", name="", sex, age, civilStatus, educationYears,
             occupation, occupationYears, caseNumber="", code="", medicalHistory,
@@ -83,7 +83,32 @@ public class Information extends javax.swing.JDialog{
     public Information(){
         super(new Frame(), "Cargar datos", true);
         
-        //Para que en los textArea haga el salto de línea buscando espacios entre las palabras 
+        initComponents();
+       
+        loadInformation();
+        System.out.println("INOFRAMSSGIOIOB: "+getMedicalHistory());
+        
+        //Agregamos evento a los botones
+        btnExit.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+               btnExitActionPerformed(e);
+            }
+        });
+        
+        btnSave.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                System.out.println("Presiono gusradar");
+                btnSaveActionPerformed(e);
+            }
+        });
+    
+    }
+
+    
+    private void initComponents(){
+     //Para que en los textArea haga el salto de línea buscando espacios entre las palabras 
         txtAreaMedicalHistory.setWrapStyleWord(true);
         txtAreaPsychologicalHistory.setWrapStyleWord(true);
         txtAreaPharmacologicalTreatment.setWrapStyleWord(true);
@@ -156,57 +181,36 @@ public class Information extends javax.swing.JDialog{
 
 	this.setLocation(((screen.width - box.width)/2), (screen.height - box.height)/2);
         
-        //Agregamos evento a los botones
-        btnExit.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e){
-               btnExitActionPerformed(e);
-                //dispose();    //oculta la ventana pero no finaliza la aplicacion
-            }
-        });
-        
-        btnSave.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e){
-                System.out.println("Presiono gusradar");
-                setLastName(txtFileLastName.getText());
-                
-                setName(txtFileName.getText());
-             
-                setSex(boxSex.getSelectedItem().toString());
-             
-                setAge(spiAge.getValue().toString());
-                
-                setCivilStatus(boxCivilStatus.getSelectedItem().toString());
-                
-                setEducationYears(spiEducationYears.getValue().toString());
-                
-                setOccupation(boxOccupation.getSelectedItem().toString());
-                
-                setOccupationYears(spiOccupationYears.getValue().toString());
-                
-                System.out.println("Años de coaupacion "+getOccupationYears());
-                
-                setCaseNumber(txtFileCaseNumber.getText());
-                
-                setCode(txtFileCode.getText());
-                
-                setMedicalHistory(txtAreaMedicalHistory.getText());
-                
-                setPsychologicalHistory(txtAreaPsychologicalHistory.getText());
-                
-                setPharmacologicalTreatment(txtAreaPharmacologicalTreatment.getText());
-                
-                setObservations(txtAreaObservations.getText());
-            }
-        });
     
     }
-
+    
      private void btnExitActionPerformed(ActionEvent e) {
         dispose();
     }
     
+     private void btnSaveActionPerformed(ActionEvent e){
+        loadInformation();
+        dispose();
+     }
+     
+     
+     private void loadInformation(){
+        setLastName(txtFileLastName.getText());
+        setName(txtFileName.getText());
+        setSex(boxSex.getSelectedItem().toString());
+        setAge(spiAge.getValue().toString());
+        setCivilStatus(boxCivilStatus.getSelectedItem().toString());
+        setEducationYears(spiEducationYears.getValue().toString());
+        setOccupation(boxOccupation.getSelectedItem().toString());
+        setOccupationYears(spiOccupationYears.getValue().toString());
+        setCaseNumber(txtFileCaseNumber.getText());
+        setCode(txtFileCode.getText());
+        setMedicalHistory(txtAreaMedicalHistory.getText());
+        setPsychologicalHistory(txtAreaPsychologicalHistory.getText());
+        setPharmacologicalTreatment(txtAreaPharmacologicalTreatment.getText());
+        setObservations(txtAreaObservations.getText());
+     }
+     
     /**
      * @return the lastName
      */
