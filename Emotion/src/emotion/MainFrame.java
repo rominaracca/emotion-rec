@@ -52,9 +52,8 @@ public class MainFrame extends javax.swing.JFrame {
                         setHour(getHour() + 1);     //y aumenta una hora
                     }
                     if(getSeg() == getConditionSeg() && getMin() == getConditionMin() && getHour() == getConditionHour()){
-                        System.out.println("Nombre Imagen: "+photos[counting].getName());
-                        System.out.println("Nobre del boton - Text: Tiempo agotado");
-                        System.out.println("Tiempo: "+getHour()+" "+getMin()+" "+getSeg()+" "+getDs());
+                       outPw.println(photos[counting].getName()+" : Tiempo agotado : "+
+                               getHour()+"."+getMin()+"."+getSeg()+"."+getDs());
                         setDs(0);
                         setSeg(0);
                         setMin(0);
@@ -343,8 +342,10 @@ public class MainFrame extends javax.swing.JFrame {
     
     private void btnAlegriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlegriaActionPerformed
         if(counting < photos.length-1){
-            System.out.println(this.photos[this.counting].getName()+" : "+ btnAlegria.getText()+" : "+
+            outPw.println(this.photos[this.counting].getName()+" : "+ btnAlegria.getText()+" : "+
                     getHour()+"."+getMin()+"."+getSeg()+"."+getDs());
+            //System.out.println(this.photos[this.counting].getName()+" : "+ btnAlegria.getText()+" : "+
+              //      getHour()+"."+getMin()+"."+getSeg()+"."+getDs());
             nextPicture();
             restartTimer();
             startTimer();
@@ -431,26 +432,25 @@ public class MainFrame extends javax.swing.JFrame {
              outPw = new PrintWriter(outFile);
              
              outPw.print("************** INFORMACIÓN PERSONAL **************\r\n");
-             outPw.println("Apellido: "+info.getLastName()+"\r\n");
-             outPw.println("Antecedentes médicos: "+info.getMedicalHistory()+"\r\n");
-             outPw.println("Nombre: "+info.getName()+"\r\n");
-            outPw.println("Sexo: "+info.getSex()+"\r\n");
-            outPw.println("Edad: "+info.getAge()+"\r\n");
-            outPw.println("Estado civil: "+info.getCivilStatus()+"\r\n");
-            outPw.println("Años de escolaridad: "+info.getEducationYears()+"\r\n");
-            outPw.println("Ocupación: "+info.getOccupation()+"\r\n");
-            outPw.println("Años de ocupación: "+info.getOccupationYears()+"\r\n");
-            outPw.println("Número de caso: "+info.getCaseNumber()+"\r\n");
+             outPw.println("Apellido: "+info.getLastName());
+             outPw.println("Nombre: "+info.getName());
+            outPw.println("Sexo: "+info.getSex());
+            outPw.println("Edad: "+info.getAge());
+            outPw.println("Estado civil: "+info.getCivilStatus());
+            outPw.println("Años de escolaridad: "+info.getEducationYears());
+            outPw.println("Ocupación: "+info.getOccupation());
+            outPw.println("Años de ocupación: "+info.getOccupationYears());
+            outPw.println("Número de caso: "+info.getCaseNumber());
             outPw.println("Código: "+info.getCode()+"\r\n");
 
-            outPw.println("************** ******************* **************\r\n");
-            outPw.println("Antecedentes médicos: "+info.getMedicalHistory()+"\r\n");
-            outPw.println("Antecedentes psicológicos: "+info.getPsychologicalHistory()+"\r\n");
-            outPw.println("Tratamiento farmacológico: "+info.getPharmacologicalTreatment()+"\r\n");
+            outPw.print("------------------------------------------------\r\n");
+            outPw.println("Antecedentes médicos: "+info.getMedicalHistory());
+            outPw.println("Antecedentes psicológicos: "+info.getPsychologicalHistory());
+            outPw.println("Tratamiento farmacológico: "+info.getPharmacologicalTreatment());
             outPw.println("Observaciones: "+info.getObservations()+"\r\n");
 
-            outPw.println("*************** DATOS DE LA PRUEBA ***************\r\n");
-            outPw.println("Imagen : Emocion : Tiempo(hs.min.seg.ds)\r\n");
+            outPw.print("*************** DATOS DE LA PRUEBA ***************\r\n");
+            outPw.println("Imagen : Emocion : Tiempo(hs.min.seg.ds)");
         
          }catch(IOException e){
              System.err.println("Error:"+e.toString());
