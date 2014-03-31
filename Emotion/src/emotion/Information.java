@@ -86,8 +86,7 @@ public final class Information extends javax.swing.JDialog{
         initComponents();
        
         loadInformation();
-        System.out.println("INOFRAMSSGIOIOB: "+getMedicalHistory());
-        
+       
         //Agregamos evento a los botones
         btnExit.addActionListener(new ActionListener(){
             @Override

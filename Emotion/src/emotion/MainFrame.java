@@ -65,10 +65,7 @@ public class MainFrame extends javax.swing.JFrame {
                     ds++;           //aumentan las decimas de segundo
                     thread.sleep(10);//que duerma una decima de segundo
                 }
-                
-                System.out.println("Fin del while");
-                //btnMenuStart.setEnabled(false);
-               // new MainFrame();
+             
              try{
                  if(outFile != null)
                      outFile.close();
@@ -86,6 +83,7 @@ public class MainFrame extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         setIconImage(new ImageIcon(getClass().getResource("/icon/flag.png")).getImage());
+        setEnabledButton(false);
         settings = new Settings();
         info = new Information(); 
     }
@@ -344,16 +342,17 @@ public class MainFrame extends javax.swing.JFrame {
         if(counting < photos.length-1){
             outPw.println(this.photos[this.counting].getName()+" : "+ btnAlegria.getText()+" : "+
                     getHour()+"."+getMin()+"."+getSeg()+"."+getDs());
-            //System.out.println(this.photos[this.counting].getName()+" : "+ btnAlegria.getText()+" : "+
-              //      getHour()+"."+getMin()+"."+getSeg()+"."+getDs());
+           
             nextPicture();
             restartTimer();
             startTimer();
-        }   
+        }  
     }//GEN-LAST:event_btnAlegriaActionPerformed
  
     private void menuItemStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemStartActionPerformed
-        startTimer();
+       setEnabledButton(true);
+       createFileResults();
+       startTimer();
     }//GEN-LAST:event_menuItemStartActionPerformed
   
     private void btnMenuOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuOpenActionPerformed
@@ -374,31 +373,80 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnMenuOpenActionPerformed
     
     private void btnAscoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAscoActionPerformed
-
+        if(counting < photos.length-1){
+            outPw.println(this.photos[this.counting].getName()+" : "+ btnAsco.getText()+" : "+
+                    getHour()+"."+getMin()+"."+getSeg()+"."+getDs());
+           
+            nextPicture();
+            restartTimer();
+            startTimer();
+        }  
     }//GEN-LAST:event_btnAscoActionPerformed
 
     private void btnEnojoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnojoActionPerformed
-
+        if(counting < photos.length-1){
+            outPw.println(this.photos[this.counting].getName()+" : "+ btnEnojo.getText()+" : "+
+                    getHour()+"."+getMin()+"."+getSeg()+"."+getDs());
+           
+            nextPicture();
+            restartTimer();
+            startTimer();
+        }  
     }//GEN-LAST:event_btnEnojoActionPerformed
 
     private void btnMiedoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMiedoActionPerformed
-
+        if(counting < photos.length-1){
+            outPw.println(this.photos[this.counting].getName()+" : "+ btnMiedo.getText()+" : "+
+                    getHour()+"."+getMin()+"."+getSeg()+"."+getDs());
+           
+            nextPicture();
+            restartTimer();
+            startTimer();
+        }
     }//GEN-LAST:event_btnMiedoActionPerformed
 
     private void btnSorpresaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSorpresaActionPerformed
-
+        if(counting < photos.length-1){
+            outPw.println(this.photos[this.counting].getName()+" : "+ btnSorpresa.getText()+" : "+
+                    getHour()+"."+getMin()+"."+getSeg()+"."+getDs());
+           
+            nextPicture();
+            restartTimer();
+            startTimer();
+        }   
     }//GEN-LAST:event_btnSorpresaActionPerformed
 
     private void btnTristezaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTristezaActionPerformed
-
+        if(counting < photos.length-1){
+            outPw.println(this.photos[this.counting].getName()+" : "+ btnTristeza.getText()+" : "+
+                    getHour()+"."+getMin()+"."+getSeg()+"."+getDs());
+           
+            nextPicture();
+            restartTimer();
+            startTimer();
+        }   
     }//GEN-LAST:event_btnTristezaActionPerformed
 
     private void btnOtraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOtraActionPerformed
-
+        if(counting < photos.length-1){
+            outPw.println(this.photos[this.counting].getName()+" : "+ btnOtra.getText()+" : "+
+                    getHour()+"."+getMin()+"."+getSeg()+"."+getDs());
+           
+            nextPicture();
+            restartTimer();
+            startTimer();
+        }   
     }//GEN-LAST:event_btnOtraActionPerformed
 
     private void btnNingunaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNingunaActionPerformed
-
+        if(counting < photos.length-1){
+            outPw.println(this.photos[this.counting].getName()+" : "+ btnNinguna.getText()+" : "+
+                    getHour()+"."+getMin()+"."+getSeg()+"."+getDs());
+           
+            nextPicture();
+            restartTimer();
+            startTimer();
+        }   
     }//GEN-LAST:event_btnNingunaActionPerformed
 
     private void btnMenuTimerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuTimerActionPerformed
@@ -414,94 +462,8 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_menuItemLoadInformationActionPerformed
 
     private void btnMenuStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuStartActionPerformed
-   /*    
-        if(thread.isAlive()){
-            System.out.println("Hilo vivo");
-        }else{
-            System.out.println("Hilo muerto");
-             startTimer();
-        }
-        */
-      
-         
-         try{
-             // Obtengo el camino absoluto de mi directorio actual
-             //String directory = System.getProperty("user.dir");
-             //file = new FileWriter(System.getProperty("user.dir")+"resultados.txt", true);
-             outFile = new FileWriter("C:\\Users\\Romi\\Desktop\\resultados.txt", true);
-             outPw = new PrintWriter(outFile);
-             
-             outPw.print("************** INFORMACIÓN PERSONAL **************\r\n");
-             outPw.println("Apellido: "+info.getLastName());
-             outPw.println("Nombre: "+info.getName());
-            outPw.println("Sexo: "+info.getSex());
-            outPw.println("Edad: "+info.getAge());
-            outPw.println("Estado civil: "+info.getCivilStatus());
-            outPw.println("Años de escolaridad: "+info.getEducationYears());
-            outPw.println("Ocupación: "+info.getOccupation());
-            outPw.println("Años de ocupación: "+info.getOccupationYears());
-            outPw.println("Número de caso: "+info.getCaseNumber());
-            outPw.println("Código: "+info.getCode()+"\r\n");
-
-            outPw.print("------------------------------------------------\r\n");
-            outPw.println("Antecedentes médicos: "+info.getMedicalHistory());
-            outPw.println("Antecedentes psicológicos: "+info.getPsychologicalHistory());
-            outPw.println("Tratamiento farmacológico: "+info.getPharmacologicalTreatment());
-            outPw.println("Observaciones: "+info.getObservations()+"\r\n");
-
-            outPw.print("*************** DATOS DE LA PRUEBA ***************\r\n");
-            outPw.println("Imagen : Emocion : Tiempo(hs.min.seg.ds)");
-        
-         }catch(IOException e){
-             System.err.println("Error:"+e.toString());
-         }
-        
-        
-        /*
-       FileWriter outFile = null;
-         try { 
-             System.out.println("CREACION ARCHIVO");
-            outFile = new FileWriter("C:\\Users\\Romi\\Desktop\\resultados.txt");
-            BufferedWriter outBuffWriter = new BufferedWriter(outFile);
-             System.out.println("FIN DE CREACION DE ARCHIVO");
-                outBuffWriter.write("************** INFORMACIÓN PERSONAL **************\r\n");
-                outBuffWriter.write("Apellido: "+info.getLastName()+"\r\n");
-                outBuffWriter.write("Nombre: "+info.getName()+"\r\n");
-                outBuffWriter.write("Sexo: "+info.getSex()+"\r\n");
-                outBuffWriter.write("Edad: "+info.getAge()+"\r\n");
-                outBuffWriter.write("Estado civil: "+info.getCivilStatus()+"\r\n");
-                outBuffWriter.write("Años de escolaridad: "+info.getEducationYears()+"\r\n");
-                outBuffWriter.write("Ocupación: "+info.getOccupation()+"\r\n");
-                outBuffWriter.write("Años de ocupación: "+info.getOccupationYears()+"\r\n");
-                outBuffWriter.write("Número de caso: "+info.getCaseNumber()+"\r\n");
-                outBuffWriter.write("Código: "+info.getCode()+"\r\n");
-                
-                outBuffWriter.write("************** ******************* **************\r\n");
-                //outBuffWriter.write("Antecedentes médicos: "+info.getMedicalHistory()+"\r\n");
-                outBuffWriter.write("Antecedentes médicos: "+info.txtAreaMedicalHistory.getText()+"\r\n");
-                outBuffWriter.write("Antecedentes psicológicos: "+info.getPsychologicalHistory()+"\r\n");
-                outBuffWriter.write("Tratamiento farmacológico: "+info.getPharmacologicalTreatment()+"\r\n");
-                outBuffWriter.write("Observaciones: "+info.getObservations()+"\r\n");
-             
-                outBuffWriter.write("*************** DATOS DE LA PRUEBA ***************\r\n");
-                outBuffWriter.write("Imagen : Emocion : Tiempo(hs.min.seg.ds)\r\n");
-        
-              //  cerrar archivo
-            
-               // outFile.close();
-               // outBuffWriter.close();
-        } catch (IOException ex) {
-             System.err.println("Error: "+ex.toString());
-            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }finally{
-             try{
-                if(outFile != null)
-                    outFile.close();
-             }catch(IOException ex){
-                 System.err.println("Error: "+ex.toString());
-             }
-         }
-        */
+        setEnabledButton(true);
+        createFileResults();
         startTimer();
     }//GEN-LAST:event_btnMenuStartActionPerformed
 
@@ -530,6 +492,43 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }
     
+    public void createFileResults(){
+        try{
+             // Obtengo el camino absoluto de mi directorio actual
+             //String directory = System.getProperty("user.dir");
+             //outFile = new FileWriter(System.getProperty("user.dir")+"resultados.txt", true);
+             outFile = new FileWriter("C:\\Users\\Romi\\Desktop\\resultados.txt");
+             //Si escribo outFile = new FileWriter("C:\\Users\\Romi\\Desktop\\resultados.txt", true);
+             //con true al final agregaré una tras otra cada version
+             outPw = new PrintWriter(outFile);
+             
+            outPw.print("\r\n************** INFORMACIÓN PERSONAL **************\r\n");
+            outPw.println("Apellido: "+info.getLastName());
+            outPw.println("Nombre: "+info.getName());
+            outPw.println("Sexo: "+info.getSex());
+            outPw.println("Edad: "+info.getAge());
+            outPw.println("Estado civil: "+info.getCivilStatus());
+            outPw.println("Años de escolaridad: "+info.getEducationYears());
+            outPw.println("Ocupación: "+info.getOccupation());
+            outPw.println("Años de ocupación: "+info.getOccupationYears());
+            outPw.println("Número de caso: "+info.getCaseNumber());
+            outPw.println("Código: "+info.getCode()+"\r\n");
+
+            outPw.print("------------------------------------------------\r\n");
+            outPw.println("Antecedentes médicos: "+info.getMedicalHistory());
+            outPw.println("Antecedentes psicológicos: "+info.getPsychologicalHistory());
+            outPw.println("Tratamiento farmacológico: "+info.getPharmacologicalTreatment());
+            outPw.println("Observaciones: "+info.getObservations()+"\r\n\r\n");
+
+            outPw.print("*************** DATOS DE LA PRUEBA ***************\r\n");
+            outPw.println("Imagen : Emocion : Tiempo(hs.min.seg.ds)");
+        
+         }catch(IOException e){
+             System.err.println("Error:"+e.toString());
+         }
+        
+    }
+    
     /**
      * En caso de haber imagenes pasa a la siguiente imagen y la pinta en la pantalla
      */
@@ -542,8 +541,22 @@ public class MainFrame extends javax.swing.JFrame {
                        counting++;
                        tmp.setImagenFromFile(photos[counting]);      //Cambia la imagen a panelPicture por medio del método setImagenFromFile()
                    }
+                   if(counting == photos.length-1){
+                       System.out.println("Ultima foto");
+                       setEnabledButton(false);
+                       /*
+                       btnAlegria.setEnabled(false);
+                       btnAsco.setEnabled(false);
+                       btnEnojo.setEnabled(false);
+                       btnMiedo.setEnabled(false);
+                       btnSorpresa.setEnabled(false);
+                       btnTristeza.setEnabled(false);
+                       btnOtra.setEnabled(false);
+                       btnNinguna.setEnabled(false);
+                       */
+                   }
            }else{
-//                stopTimer();
+                System.err.println("Fotos es null en nextPicture");
  //               System.out.println("PARO EL CRONOMETRO");
             }
         }catch(Exception e){
@@ -551,6 +564,20 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }
    
+    /**
+     * Habilita o deshabilita los botones emiciones del panel principal
+     * @param b true si los botones estan visibles o false si los botones no estan habilitados
+     */
+    public void setEnabledButton(boolean b){
+        btnAlegria.setEnabled(b);
+        btnAsco.setEnabled(b);
+        btnEnojo.setEnabled(b);
+        btnMiedo.setEnabled(b);
+        btnSorpresa.setEnabled(b);
+        btnTristeza.setEnabled(b);
+        btnOtra.setEnabled(b);
+        btnNinguna.setEnabled(b);
+    }
     
     /**
      * Inicia el cronometro.
