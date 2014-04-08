@@ -1,15 +1,10 @@
 package emotion;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -69,6 +64,9 @@ public class MainFrame extends javax.swing.JFrame {
              try{
                  if(outFile != null)
                      outFile.close();
+                 /*
+                 JOptionPane.showMessageDialog(null, "Resultados guardado con exito"); 
+                 */
              }catch(IOException ex){
                  System.err.println("Error:"+ex.toString());
              }
@@ -84,6 +82,8 @@ public class MainFrame extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         setIconImage(new ImageIcon(getClass().getResource("/icon/flag.png")).getImage());
         setEnabledButton(false);
+        btnMenuStart.setEnabled(false);
+        menuItemStart.setEnabled(false);
         settings = new Settings();
         info = new Information(); 
     }
@@ -368,7 +368,8 @@ public class MainFrame extends javax.swing.JFrame {
             loadDirectory(pictureFile.getParent());
             panelPicture.add(picture);        
         }   
-        
+        btnMenuStart.setEnabled(true);
+        menuItemStart.setEnabled(true);
        // restartTimer();
     }//GEN-LAST:event_btnMenuOpenActionPerformed
     
@@ -493,11 +494,18 @@ public class MainFrame extends javax.swing.JFrame {
     }
     
     public void createFileResults(){
+       
+        JFileChooser fc = new JFileChooser(); 
+        fc.setDialogTitle("Guardar archivo"); 
+        int option = fc.showSaveDialog(fc); 
+        
+        if (JFileChooser.APPROVE_OPTION == option) { 
         try{
              // Obtengo el camino absoluto de mi directorio actual
              //String directory = System.getProperty("user.dir");
-             //outFile = new FileWriter(System.getProperty("user.dir")+"resultados.txt", true);
-             outFile = new FileWriter("C:\\Users\\Romi\\Desktop\\resultados.txt");
+            // outFile = new FileWriter(directory+"resultados.txt");
+             outFile = new FileWriter(fc.getSelectedFile() + "");
+             //outFile = new FileWriter("C:\\Users\\Romi\\Desktop\\resultados.txt");
              //Si escribo outFile = new FileWriter("C:\\Users\\Romi\\Desktop\\resultados.txt", true);
              //con true al final agregaré una tras otra cada version
              outPw = new PrintWriter(outFile);
@@ -527,6 +535,7 @@ public class MainFrame extends javax.swing.JFrame {
              System.err.println("Error:"+e.toString());
          }
         
+        }
     }
     
     /**
@@ -544,16 +553,8 @@ public class MainFrame extends javax.swing.JFrame {
                    if(counting == photos.length-1){
                        System.out.println("Ultima foto");
                        setEnabledButton(false);
-                       /*
-                       btnAlegria.setEnabled(false);
-                       btnAsco.setEnabled(false);
-                       btnEnojo.setEnabled(false);
-                       btnMiedo.setEnabled(false);
-                       btnSorpresa.setEnabled(false);
-                       btnTristeza.setEnabled(false);
-                       btnOtra.setEnabled(false);
-                       btnNinguna.setEnabled(false);
-                       */
+                       btnMenuStart.setEnabled(false);
+                       menuItemStart.setEnabled(false);
                    }
            }else{
                 System.err.println("Fotos es null en nextPicture");
@@ -620,10 +621,8 @@ public class MainFrame extends javax.swing.JFrame {
        
        try{
             if(!issuspended){
-                System.out.println("START");
                 thread.start();
             }else{
-                System.out.println("RESUME");
                 thread.resume();
                 issuspended = false;
             }

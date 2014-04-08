@@ -190,8 +190,8 @@ public class Settings extends javax.swing.JDialog{
         
         //Agregamos al panel main los paneles timer y directory que contienen los componentes
         panelMain.add("North", panelTimer);
-        panelMain.add("Center", panelDirectory);
-        panelMain.add("South", panelButton);
+       // panelMain.add("Center", panelDirectory);
+       // panelMain.add("South", panelButton);
         
         //Agregamos el panel main al cuadro de dialogo Settings
         getContentPane().add(panelMain);
