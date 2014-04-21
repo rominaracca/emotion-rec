@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
@@ -15,17 +16,13 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  */
 public class MainFrame extends javax.swing.JFrame {
 
-    //public static File[] photos;
     private File[] photos;
     private int counting;
     private int hour, min, seg, ds, conditionHour, conditionMin, conditionSeg;
-    public boolean issuspended = false; //para saber si el hilo esta suspendido o pausado
+    public boolean issuspended=  false; //para saber si el hilo esta suspendido o pausado
     Settings settings;// = new Settings();
     Information info; // = new Information();
-    //private boolean start = false;
-    
-    //FileWriter outFile;
-   // BufferedWriter outBuffWriter;
+  
     FileWriter outFile = null;
     PrintWriter outPw;
     
@@ -47,8 +44,10 @@ public class MainFrame extends javax.swing.JFrame {
                         setHour(getHour() + 1);     //y aumenta una hora
                     }
                     if(getSeg() == getConditionSeg() && getMin() == getConditionMin() && getHour() == getConditionHour()){
-                       outPw.println(photos[counting].getName()+" : Tiempo agotado : "+
+                        if(outFile != null){ 
+                             outPw.println(photos[counting].getName()+" : Tiempo agotado : "+
                                getHour()+"."+getMin()+"."+getSeg()+"."+getDs());
+                        }
                         setDs(0);
                         setSeg(0);
                         setMin(0);
@@ -60,19 +59,19 @@ public class MainFrame extends javax.swing.JFrame {
                     ds++;           //aumentan las decimas de segundo
                     thread.sleep(10);//que duerma una decima de segundo
                 }
-             
+            
              try{
-                 if(outFile != null)
+                 if(outFile != null){
+                     //outFile.flush();
                      outFile.close();
-                 /*
-                 JOptionPane.showMessageDialog(null, "Resultados guardado con exito"); 
-                 */
+                     JOptionPane.showMessageDialog(null, "Resultados guardado con exito"); 
+                 }
              }catch(IOException ex){
-                 System.err.println("Error:"+ex.toString());
+                 System.err.println("Error Thread_IOFIleClose:"+ex.toString());
              }
                 
             } catch (java.lang.InterruptedException ie) {
-                System.out.println(ie.getMessage());
+                System.err.println("Error Thread_Interrupted: "+ie.getMessage());
             }
         }
     };
@@ -102,6 +101,7 @@ public class MainFrame extends javax.swing.JFrame {
         menuItem = new javax.swing.JMenuItem();
         jToolBar2 = new javax.swing.JToolBar();
         btnMenuOpen = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         btnMenuTimer = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JToolBar.Separator();
         btnMenuStart = new javax.swing.JButton();
@@ -136,7 +136,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         jToolBar2.setRollover(true);
 
-        btnMenuOpen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/open32x32.png"))); // NOI18N
+        btnMenuOpen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/load32x32.png"))); // NOI18N
         btnMenuOpen.setToolTipText("Abrir archivo");
         btnMenuOpen.setFocusable(false);
         btnMenuOpen.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -147,6 +147,17 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         jToolBar2.add(btnMenuOpen);
+
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/save32x32.png"))); // NOI18N
+        jButton1.setFocusable(false);
+        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jToolBar2.add(jButton1);
 
         btnMenuTimer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/clock32x32.png"))); // NOI18N
         btnMenuTimer.setToolTipText("Ajustar cronometro");
@@ -340,9 +351,10 @@ public class MainFrame extends javax.swing.JFrame {
     
     private void btnAlegriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlegriaActionPerformed
         if(counting < photos.length-1){
-            outPw.println(this.photos[this.counting].getName()+" : "+ btnAlegria.getText()+" : "+
+            if(outFile != null){
+                outPw.println(this.photos[this.counting].getName()+" : "+ btnAlegria.getText()+" : "+
                     getHour()+"."+getMin()+"."+getSeg()+"."+getDs());
-           
+            }
             nextPicture();
             restartTimer();
             startTimer();
@@ -350,8 +362,21 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAlegriaActionPerformed
  
     private void menuItemStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemStartActionPerformed
+       counting = 0;
+        
        setEnabledButton(true);
-       createFileResults();
+       ///createFileResults();
+     
+       try{
+            if(photos != null){
+                   Picture tmp = (Picture) panelPicture.getComponent(0);
+                   tmp.setImagenFromFile(photos[0]);      //Cambia la imagen a panelPicture por medio del método setImagenFromFile()         
+            }           
+        }catch(Exception e){
+            System.err.println("Error menu_start: "+e.toString());
+        }
+       
+       
        startTimer();
     }//GEN-LAST:event_menuItemStartActionPerformed
   
@@ -361,11 +386,12 @@ public class MainFrame extends javax.swing.JFrame {
         fcPicture.setFileFilter(new FileNameExtensionFilter("Archivo de imagen", "jpg", "JPG", "jpeg", "JPEG", "png", "PNG", "gif", "GIF"));
         int option = fcPicture.showDialog(this, "Abrir"); 
         panelPicture.removeAll();   //limpio el panel por si se carga otro directorio
-        System.out.println("Limio panel");
+    
         if(option == JFileChooser.APPROVE_OPTION){    
             File pictureFile = fcPicture.getSelectedFile(); 
-            Picture picture = new Picture(pictureFile.getPath());  
             loadDirectory(pictureFile.getParent());
+            
+            Picture picture = new Picture(pictureFile.getPath());  
             panelPicture.add(picture);        
         }   
         btnMenuStart.setEnabled(true);
@@ -375,9 +401,10 @@ public class MainFrame extends javax.swing.JFrame {
     
     private void btnAscoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAscoActionPerformed
         if(counting < photos.length-1){
-            outPw.println(this.photos[this.counting].getName()+" : "+ btnAsco.getText()+" : "+
+            if(outFile != null){
+                outPw.println(this.photos[this.counting].getName()+" : "+ btnAsco.getText()+" : "+
                     getHour()+"."+getMin()+"."+getSeg()+"."+getDs());
-           
+            }
             nextPicture();
             restartTimer();
             startTimer();
@@ -386,9 +413,10 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void btnEnojoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnojoActionPerformed
         if(counting < photos.length-1){
-            outPw.println(this.photos[this.counting].getName()+" : "+ btnEnojo.getText()+" : "+
+           if(outFile != null){
+                outPw.println(this.photos[this.counting].getName()+" : "+ btnEnojo.getText()+" : "+
                     getHour()+"."+getMin()+"."+getSeg()+"."+getDs());
-           
+           }
             nextPicture();
             restartTimer();
             startTimer();
@@ -397,9 +425,10 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void btnMiedoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMiedoActionPerformed
         if(counting < photos.length-1){
-            outPw.println(this.photos[this.counting].getName()+" : "+ btnMiedo.getText()+" : "+
+            if(outFile != null){
+                outPw.println(this.photos[this.counting].getName()+" : "+ btnMiedo.getText()+" : "+
                     getHour()+"."+getMin()+"."+getSeg()+"."+getDs());
-           
+            }
             nextPicture();
             restartTimer();
             startTimer();
@@ -408,9 +437,10 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void btnSorpresaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSorpresaActionPerformed
         if(counting < photos.length-1){
-            outPw.println(this.photos[this.counting].getName()+" : "+ btnSorpresa.getText()+" : "+
+            if(outFile != null){
+                outPw.println(this.photos[this.counting].getName()+" : "+ btnSorpresa.getText()+" : "+
                     getHour()+"."+getMin()+"."+getSeg()+"."+getDs());
-           
+            }
             nextPicture();
             restartTimer();
             startTimer();
@@ -419,9 +449,10 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void btnTristezaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTristezaActionPerformed
         if(counting < photos.length-1){
-            outPw.println(this.photos[this.counting].getName()+" : "+ btnTristeza.getText()+" : "+
+             if(outFile != null){
+                 outPw.println(this.photos[this.counting].getName()+" : "+ btnTristeza.getText()+" : "+
                     getHour()+"."+getMin()+"."+getSeg()+"."+getDs());
-           
+             }
             nextPicture();
             restartTimer();
             startTimer();
@@ -430,9 +461,10 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void btnOtraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOtraActionPerformed
         if(counting < photos.length-1){
-            outPw.println(this.photos[this.counting].getName()+" : "+ btnOtra.getText()+" : "+
+             if(outFile != null){
+                 outPw.println(this.photos[this.counting].getName()+" : "+ btnOtra.getText()+" : "+
                     getHour()+"."+getMin()+"."+getSeg()+"."+getDs());
-           
+             }
             nextPicture();
             restartTimer();
             startTimer();
@@ -441,9 +473,10 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void btnNingunaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNingunaActionPerformed
         if(counting < photos.length-1){
-            outPw.println(this.photos[this.counting].getName()+" : "+ btnNinguna.getText()+" : "+
+            if(outFile != null){
+                outPw.println(this.photos[this.counting].getName()+" : "+ btnNinguna.getText()+" : "+
                     getHour()+"."+getMin()+"."+getSeg()+"."+getDs());
-           
+            }
             nextPicture();
             restartTimer();
             startTimer();
@@ -463,10 +496,27 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_menuItemLoadInformationActionPerformed
 
     private void btnMenuStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuStartActionPerformed
+        counting = 0;
+        
         setEnabledButton(true);
-        createFileResults();
+       // createFileResults();
+      
+          try{
+            if(photos != null){
+                   Picture tmp = (Picture) panelPicture.getComponent(0);
+                   tmp.setImagenFromFile(photos[0]);      //Cambia la imagen a panelPicture por medio del método setImagenFromFile()         
+            }           
+        }catch(Exception e){
+            System.err.println("Error menu_start: "+e.toString());
+        }
+     
+        
         startTimer();
     }//GEN-LAST:event_btnMenuStartActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+         createFileResults();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     
     /**
@@ -499,17 +549,13 @@ public class MainFrame extends javax.swing.JFrame {
         fc.setDialogTitle("Guardar archivo"); 
         int option = fc.showSaveDialog(fc); 
         
-        if (JFileChooser.APPROVE_OPTION == option) { 
         try{
-             // Obtengo el camino absoluto de mi directorio actual
-             //String directory = System.getProperty("user.dir");
-            // outFile = new FileWriter(directory+"resultados.txt");
-             outFile = new FileWriter(fc.getSelectedFile() + "");
-             //outFile = new FileWriter("C:\\Users\\Romi\\Desktop\\resultados.txt");
-             //Si escribo outFile = new FileWriter("C:\\Users\\Romi\\Desktop\\resultados.txt", true);
-             //con true al final agregaré una tras otra cada version
-             outPw = new PrintWriter(outFile);
-             
+            if (JFileChooser.APPROVE_OPTION == option) { 
+                outFile = new FileWriter(fc.getSelectedFile() + "");
+                
+                
+                outPw = new PrintWriter(outFile);
+
             outPw.print("\r\n************** INFORMACIÓN PERSONAL **************\r\n");
             outPw.println("Apellido: "+info.getLastName());
             outPw.println("Nombre: "+info.getName());
@@ -530,12 +576,24 @@ public class MainFrame extends javax.swing.JFrame {
 
             outPw.print("*************** DATOS DE LA PRUEBA ***************\r\n");
             outPw.println("Imagen : Emocion : Tiempo(hs.min.seg.ds)");
-        
-         }catch(IOException e){
-             System.err.println("Error:"+e.toString());
-         }
-        
+
+            if(outFile != null)
+                System.out.println("SE creo el archivo");
+            
+            }/*else{
+                //String directory = System.getProperty("user.dir");        //Obtengo el camino absoluto de mi directorio actual
+                if(outFile == null){ 
+                    outFile = new FileWriter("Resultados.txt",true);    //con true al final agregaré una tras otra cada version
+               }else{
+                    outFile.
+                }
+            }*/
+            
+            
+        }catch(IOException e){
+            System.err.println("Error createFileResults: "+e.toString());
         }
+        
     }
     
     /**
@@ -585,8 +643,6 @@ public class MainFrame extends javax.swing.JFrame {
      * Se configura el valor de corte del cronometro en base a la configuracion asignada en Settings
      */
     public void startTimer(){
-      
-        
             /*
         File fileSetting = null;
         FileReader fr = null;
@@ -619,15 +675,26 @@ public class MainFrame extends javax.swing.JFrame {
         setConditionMin((int) settings.spiMin.getValue());
        setConditionSeg((int) settings.spiSeg.getValue());
        
+     /*
+       if(!thread.isAlive()){
+           System.err.println("HILO MUERTO");
+           //thread = new Thread();
+       }else{
+           System.out.println("HILO VIVO");
+       }
+     */
+       
        try{
             if(!issuspended){
+               // System.out.println("START");
                 thread.start();
             }else{
+               // System.out.println("RESUME");
                 thread.resume();
                 issuspended = false;
             }
         }catch(Exception e){
-                System.err.println("Error: "+e.toString());
+                System.err.println("Error StartTimer: "+e.toString());
         }
     }
 
@@ -637,6 +704,7 @@ public class MainFrame extends javax.swing.JFrame {
      * Hora, minutos, segundos y decimas de segundos se le asigna valor cero
      */
     public void restartTimer(){
+       // System.out.println("SUSPEND");
         thread.suspend();
         setHour(0);
         setMin(0);
@@ -762,6 +830,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnOtra;
     private javax.swing.JButton btnSorpresa;
     private javax.swing.JButton btnTristeza;
+    private javax.swing.JButton jButton1;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar jToolBar2;
     private javax.swing.JMenu menu;

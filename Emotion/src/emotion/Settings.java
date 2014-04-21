@@ -163,7 +163,7 @@ public class Settings extends javax.swing.JDialog{
         //Asignamos un valor por defecto de seguntos
         spiSeg.setValue(8);
         
-        btnDirectory.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/open32x32.png")));
+        btnDirectory.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/load32x32.png")));
         
         //Agregamos al panel timer los componentes
         panelTimer.add(lblTimer);
