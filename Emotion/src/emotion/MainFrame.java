@@ -6,6 +6,7 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -132,12 +133,12 @@ public class MainFrame extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Reconocimiento de emociones");
         setMinimumSize(new java.awt.Dimension(800, 600));
-        setResizable(false);
 
         jToolBar2.setRollover(true);
 
         btnMenuOpen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/load32x32.png"))); // NOI18N
-        btnMenuOpen.setToolTipText("Abrir archivo");
+        btnMenuOpen.setText("Abrir imágenes");
+        btnMenuOpen.setToolTipText("Abrir imágenes");
         btnMenuOpen.setFocusable(false);
         btnMenuOpen.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnMenuOpen.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -149,6 +150,8 @@ public class MainFrame extends javax.swing.JFrame {
         jToolBar2.add(btnMenuOpen);
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/save32x32.png"))); // NOI18N
+        jButton1.setText("Guardar resultados");
+        jButton1.setToolTipText("Guardar resultados");
         jButton1.setFocusable(false);
         jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -160,6 +163,7 @@ public class MainFrame extends javax.swing.JFrame {
         jToolBar2.add(jButton1);
 
         btnMenuTimer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/clock32x32.png"))); // NOI18N
+        btnMenuTimer.setText("Ajustar cronometro");
         btnMenuTimer.setToolTipText("Ajustar cronometro");
         btnMenuTimer.setFocusable(false);
         btnMenuTimer.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -173,6 +177,7 @@ public class MainFrame extends javax.swing.JFrame {
         jToolBar2.add(jSeparator1);
 
         btnMenuStart.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/play32x32.png"))); // NOI18N
+        btnMenuStart.setText("Iniciar");
         btnMenuStart.setToolTipText("Iniciar");
         btnMenuStart.setFocusable(false);
         btnMenuStart.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -186,8 +191,8 @@ public class MainFrame extends javax.swing.JFrame {
 
         getContentPane().add(jToolBar2, java.awt.BorderLayout.PAGE_START);
 
-        panelPicture.setMaximumSize(new java.awt.Dimension(600, 800));
         panelPicture.setMinimumSize(new java.awt.Dimension(600, 800));
+        panelPicture.setLayout(new java.awt.BorderLayout());
         getContentPane().add(panelPicture, java.awt.BorderLayout.CENTER);
 
         panelButtonEmotion.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Emociones", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Arial", 0, 18))); // NOI18N
@@ -365,8 +370,7 @@ public class MainFrame extends javax.swing.JFrame {
        counting = 0;
         
        setEnabledButton(true);
-       ///createFileResults();
-     
+    
        try{
             if(photos != null){
                    Picture tmp = (Picture) panelPicture.getComponent(0);
@@ -375,28 +379,15 @@ public class MainFrame extends javax.swing.JFrame {
         }catch(Exception e){
             System.err.println("Error menu_start: "+e.toString());
         }
-       
-       
+   
        startTimer();
     }//GEN-LAST:event_menuItemStartActionPerformed
   
     private void btnMenuOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuOpenActionPerformed
-        //JFileChooser fc = new JFileChooser("C:\\Users\\Romi\\Desktop\\");
-        JFileChooser fcPicture = new JFileChooser();
-        fcPicture.setFileFilter(new FileNameExtensionFilter("Archivo de imagen", "jpg", "JPG", "jpeg", "JPEG", "png", "PNG", "gif", "GIF"));
-        int option = fcPicture.showDialog(this, "Abrir"); 
-        panelPicture.removeAll();   //limpio el panel por si se carga otro directorio
-    
-        if(option == JFileChooser.APPROVE_OPTION){    
-            File pictureFile = fcPicture.getSelectedFile(); 
-            loadDirectory(pictureFile.getParent());
-            
-            Picture picture = new Picture(pictureFile.getPath());  
-            panelPicture.add(picture);        
-        }   
+       loadPicture();
         btnMenuStart.setEnabled(true);
         menuItemStart.setEnabled(true);
-       // restartTimer();
+      
     }//GEN-LAST:event_btnMenuOpenActionPerformed
     
     private void btnAscoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAscoActionPerformed
@@ -532,7 +523,9 @@ public class MainFrame extends javax.swing.JFrame {
                     if(nombre.endsWith(".jpg") || nombre.endsWith(".JPG") ||
                             nombre.endsWith(".jpeg") || nombre.endsWith(".JPEG") ||
                             nombre.endsWith(".gif") || nombre.endsWith(".GIF") ||
-                            nombre.endsWith(".png") || nombre.endsWith(".PNG"))
+                            nombre.endsWith(".png") || nombre.endsWith(".PNG") ||
+                            nombre.endsWith(".tif") || nombre.endsWith(".TIF") ||
+                            nombre.endsWith(".tiff") || nombre.endsWith(".TIFF"))
                     {
                         return true;
                     }
@@ -542,6 +535,28 @@ public class MainFrame extends javax.swing.JFrame {
             
         }
     }
+    
+    /**
+     * 
+     */
+    public void loadPicture(){
+     //JFileChooser fc = new JFileChooser("C:\\Users\\Romi\\Desktop\\");
+        JFileChooser fcPicture = new JFileChooser();
+        fcPicture.setFileFilter(new FileNameExtensionFilter("Archivo de imagen", "jpg", "JPG", "jpeg", "JPEG", "png", "PNG", "gif", "GIF", "tif", "TIF", "tiff", "TIFF"));
+        int option = fcPicture.showDialog(this, "Abrir"); 
+        panelPicture.removeAll();   //limpio el panel por si se carga otro directorio
+    
+        if(option == JFileChooser.APPROVE_OPTION){    
+            File pictureFile = fcPicture.getSelectedFile(); 
+            loadDirectory(pictureFile.getParent());
+            
+            Picture picture = new Picture(pictureFile.getPath());  
+           // panelPicture.add(new JButton("OESTE") , java.awt.BorderLayout.WEST);
+            panelPicture.add(picture);        
+            //panelPicture.add(picture, java.awt.BorderLayout.CENTER);        
+        }   
+    }
+    
     
     public void createFileResults(){
        
@@ -606,10 +621,11 @@ public class MainFrame extends javax.swing.JFrame {
                    
                    if(counting < photos.length-1){
                        counting++;
+                       
                        tmp.setImagenFromFile(photos[counting]);      //Cambia la imagen a panelPicture por medio del método setImagenFromFile()
                    }
                    if(counting == photos.length-1){
-                       System.out.println("Ultima foto");
+                       //System.out.println("Ultima foto");
                        setEnabledButton(false);
                        btnMenuStart.setEnabled(false);
                        menuItemStart.setEnabled(false);

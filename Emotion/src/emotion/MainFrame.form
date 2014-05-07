@@ -97,7 +97,6 @@
     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
       <Dimension value="[800, 600]"/>
     </Property>
-    <Property name="resizable" type="boolean" value="false"/>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="menuBar" type="java.lang.String" value="menuBar"/>
@@ -136,7 +135,8 @@
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/icon/load32x32.png"/>
             </Property>
-            <Property name="toolTipText" type="java.lang.String" value="Abrir archivo"/>
+            <Property name="text" type="java.lang.String" value="Abrir im&#xe1;genes"/>
+            <Property name="toolTipText" type="java.lang.String" value="Abrir im&#xe1;genes"/>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
             <Property name="verticalTextPosition" type="int" value="3"/>
@@ -150,6 +150,8 @@
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/icon/save32x32.png"/>
             </Property>
+            <Property name="text" type="java.lang.String" value="Guardar resultados"/>
+            <Property name="toolTipText" type="java.lang.String" value="Guardar resultados"/>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
             <Property name="verticalTextPosition" type="int" value="3"/>
@@ -163,6 +165,7 @@
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/icon/clock32x32.png"/>
             </Property>
+            <Property name="text" type="java.lang.String" value="Ajustar cronometro"/>
             <Property name="toolTipText" type="java.lang.String" value="Ajustar cronometro"/>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
@@ -179,6 +182,7 @@
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/icon/play32x32.png"/>
             </Property>
+            <Property name="text" type="java.lang.String" value="Iniciar"/>
             <Property name="toolTipText" type="java.lang.String" value="Iniciar"/>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
@@ -192,9 +196,6 @@
     </Container>
     <Container class="javax.swing.JPanel" name="panelPicture">
       <Properties>
-        <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-          <Dimension value="[600, 800]"/>
-        </Property>
         <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[600, 800]"/>
         </Property>
@@ -205,7 +206,7 @@
         </Constraint>
       </Constraints>
 
-      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout"/>
+      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
     </Container>
     <Container class="javax.swing.JPanel" name="panelButtonEmotion">
       <Properties>
